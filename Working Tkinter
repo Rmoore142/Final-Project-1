@@ -1,0 +1,98 @@
+class LibraryApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Online College Library")
+
+        self.main_frame = tk.Frame(root)
+        self.main_frame.pack(pady=20)
+
+        self.label = tk.Label(self.main_frame, text="Welcome to the Online College Library")
+        self.label.pack(pady=10)
+
+        self.course_button = tk.Button(self.main_frame, text="Manage College Courses", command=self.open_courses_window)
+        self.course_button.pack(pady=5)
+
+        self.personal_button = tk.Button(self.main_frame, text="Manage Personal Books", command=self.open_personal_window)
+        self.personal_button.pack(pady=5)
+
+    def open_courses_window(self):
+        CoursesWindow()
+
+    def open_personal_window(self):
+        PersonalBooksWindow()
+
+
+class CoursesWindow:
+    def __init__(self):
+        self.window = tk.Toplevel()
+        self.window.title("College Courses")
+
+        self.course_listbox = tk.Listbox(self.window, width=50)
+        self.course_listbox.pack(pady=10)
+
+        self.course_entry = tk.Entry(self.window, width=50)
+        self.course_entry.pack(pady=5)
+
+        self.add_button = tk.Button(self.window, text="Add Course", command=self.add_course)
+        self.add_button.pack(pady=5)
+
+        self.populate_courses()
+
+    def populate_courses(self):
+        """Populate the listbox with college courses."""
+        self.course_listbox.delete(0, tk.END)
+        for course in courses:
+            self.course_listbox.insert(tk.END, course)
+
+    def add_course(self):
+        """Add a new college course."""
+        new_course = self.course_entry.get()
+        if new_course:
+            courses.append(new_course)
+            self.course_entry.delete(0, tk.END)
+            self.populate_courses()
+        else:
+            messagebox.showwarning("Input Error", "Please enter a course name.")
+
+
+class PersonalBooksWindow:
+    def __init__(self):
+        self.window = tk.Toplevel()
+        self.window.title("Personal Books")
+
+        self.book_listbox = tk.Listbox(self.window, width=50)
+        self.book_listbox.pack(pady=10)
+
+        self.book_entry = tk.Entry(self.window, width=50)
+        self.book_entry.pack(pady=5)
+
+        self.add_button = tk.Button(self.window, text="Add Book", command=self.add_book)
+        self.add_button.pack(pady=5)
+
+        self.populate_books()
+
+    def populate_books(self):
+        """Populate the listbox with personal books."""
+        self.book_listbox.delete(0, tk.END)
+        for book in personal_books:
+            self.book_listbox.insert(tk.END, book)
+
+    def add_book(self):
+        """Add a new personal book."""
+        new_book = self.book_entry.get()
+        if new_book:
+            personal_books.append(new_book)
+            self.book_entry.delete(0, tk.END)
+            self.populate_books()
+        else:
+            messagebox.showwarning("Input Error", "Please enter a book name.")
+
+
+#  data
+courses = []
+personal_books = []
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = LibraryApp(root)
+    root.mainloop()
