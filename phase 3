@@ -1,0 +1,36 @@
+class CoursesWindow:
+    def __init__(self, parent):
+        self.window = tk.Toplevel(parent)
+        self.window.title("College Courses")
+
+        self.course_listbox = tk.Listbox(self.window, width=50)
+        self.course_listbox.pack(pady=10)
+
+        self.course_entry = tk.Entry(self.window, width=50)
+        self.course_entry.pack(pady=5)
+
+        self.add_button = tk.Button(self.window, text="Add Course", command=self.add_course)
+        self.add_button.pack(pady=5)
+
+        # Load and display the image
+        self.course_image = tk.PhotoImage(file="college_courses.png")  # Ensure this file is in the same directory
+        self.image_label = tk.Label(self.window, image=self.course_image)
+        self.image_label.pack(pady=10)
+
+        self.populate_courses()
+
+    def populate_courses(self):
+        """Populate the listbox with college courses."""
+        self.course_listbox.delete(0, tk.END)
+        for course in get_courses():
+            self.course_listbox.insert(tk.END, course)
+
+    def add_course(self):
+        """Add a new college course."""
+        new_course = self.course_entry.get()
+        if new_course:
+            add_course(new_course)
+            self.course_entry.delete(0, tk.END)
+            self.populate_courses()
+        else:
+            messagebox.showwarning("Input Error", "Please enter a course name.")
